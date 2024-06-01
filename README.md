@@ -1,19 +1,19 @@
-#Ghost: The Spooktacular Compression Algorithm 👻
+# Ghost: The Spooktacular Compression Algorithm 👻
 
 Welcome to Ghost, the eeriest compression algorithm you'll ever encounter! Ghost works its spectral magic by finding sequences that aren't there and using them to substitute larger sequences. It's a phantom in the binary night, reducing file sizes with spooky efficiency.
 
-##How It Works 🎃
+## How It Works 🎃
 
     Extraction: Ghost prowls your data, extracting all possible subsequences and counting their occurrences.
     Filtering: Only the subsequences that occur more than once survive the spectral filter.
     Finding the Missing: Ghost hunts for sequences that are missing from the data, lurking in the shadows of potential patterns.
     Replacement: The most common sequences are replaced by these ghostly missing sequences, creating compressed data that fits in the haunted .boo extension.
 
-##The .boo Extension 👻
+## The .boo Extension 👻
 
 When Ghost haunts your files, it compresses them into a .boo file, carrying the essence of your original data in a spooky, compact form. Don't be afraid to open it—it's just smaller!
 
-##Installation 🕸️
+## Installation 🕸️
 
 Clone this repository to your local lair:
 
@@ -41,15 +41,15 @@ bash
 
 python ghost-compress.py myfile.txt 100 256
 
-##Contributing 👻
+## Contributing 👻
 
 Feel the chill of inspiration? Fork this repo, create a new branch, and raise a PR. Let’s make Ghost even spookier together!
 
-##License 🧛
+## License 🧛
 
 This project is open-sourced under GPL 3.0.
 
-##Acknowledgments
+## Acknowledgments
 
     God for the ideas
     Sonic (custom GPT-4 instance) for the code
