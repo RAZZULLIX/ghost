@@ -112,26 +112,56 @@ def get_combined_size(file1, file2):
     """
     return os.path.getsize(file1) + os.path.getsize(file2)
 
+def get_iteration_count(dict_file_path):
+    """
+    Get the number of iterations from the dictionary file.
+    """
+    if not os.path.exists(dict_file_path):
+        return None
+    with open(dict_file_path, 'rb') as dict_file:
+        iterations = 0
+        while True:
+            try:
+                pickle.load(dict_file)
+                iterations += 1
+            except EOFError:
+                break
+    return iterations
+
 def main(file_path, total_iterations, max_length, top_n=256):
-    data = read_file(file_path)
     dict_file_path = file_path + '.dict'
     compressed_file_path = file_path + '.boo'
+    compressed = False
 
-    # Initialize or clear the dictionary file
-    with open(dict_file_path, 'wb') as dict_file:
-        pass
+    if file_path.endswith('.boo'):
+        compressed_file_path = file_path
+        dict_file_path = file_path.replace('.boo','.dict')
+        iterations_done = get_iteration_count(dict_file_path)
+        if iterations_done is None:
+            print("Dictionary file not found. Cannot continue compression.")
+            sys.exit(1)
+        data = read_file(file_path)
+        compressed = True
+        iteration_count = iterations_done
+    else:
+        iteration_count = 0
+        iterations_done = 0
+        data = read_file(file_path)
+        # Initialize or clear the dictionary file
+        with open(dict_file_path, 'wb') as dict_file:
+            pass
 
     # Initial combined size
-    write_file(compressed_file_path, data)
+    if not compressed:
+        write_file(compressed_file_path, data)
     previous_combined_size = get_combined_size(dict_file_path, compressed_file_path)
     
     # Introduce bias to avoid local maximum
     previous_combined_size *= 1.01
 
     sequence_length = 1
-    iteration_count = 0
 
-    while sequence_length < max_length and (total_iterations == -1 or iteration_count < total_iterations):
+    while sequence_length < max_length and (total_iterations == -1 or iteration_count - iterations_done < total_iterations):
         print(f"Processing sequence length: {sequence_length}")
         missing_sequences = find_missing_sequences(data, sequence_length)
         if not missing_sequences:
@@ -155,7 +185,7 @@ def main(file_path, total_iterations, max_length, top_n=256):
             current_mapping = {first_missing_sequence: highest_score_sequence}
 
             # Calculate combined size
-            current_combined_size = len(first_missing_sequence)+len(data)+os.path.getsize(dict_file_path)
+            current_combined_size = len(first_missing_sequence) + len(data) + os.path.getsize(dict_file_path)
             if current_combined_size > previous_combined_size:
                 print("Max compression reached. Stopping compression.")
                 return
@@ -169,7 +199,7 @@ def main(file_path, total_iterations, max_length, top_n=256):
             # Trigger garbage collection to free up memory
             gc.collect()
 
-            previous_combined_size = min(current_combined_size,previous_combined_size)
+            previous_combined_size = min(current_combined_size, previous_combined_size)
 
             iteration_count += 1
 
