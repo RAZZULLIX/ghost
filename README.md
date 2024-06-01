@@ -39,7 +39,7 @@ Example:
 
 bash
 
-python ghost-compress.py myfile.txt 100 256
+python ghost-compress.py myfile.txt 100 10
 
 ## Contributing 👻
 
