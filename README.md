@@ -17,13 +17,12 @@ When Ghost haunts your files, it compresses them into a .boo file, carrying the 
 
 Clone this repository to your local lair:
 
-bash
+    git clone https://github.com/RAZZULLIX/ghost.git
+    cd ghost
 
-git clone https://github.com/RAZZULLIX/ghost.git
-cd ghost-compression
+Make sure you have Python and all required packages installed, or Ghost might get cranky.
 
-Make sure you have Python installed, or Ghost might get cranky.
-Usage 🦇
+## Usage 🦇
 
 Run Ghost from the command line with:
 
