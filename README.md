@@ -4,10 +4,10 @@ Welcome to Ghost, the eeriest compression algorithm you'll ever encounter! Ghost
 
 ## How It Works 🎃
 
-    Extraction: Ghost prowls your data, extracting all possible subsequences and counting their occurrences.
-    Filtering: Only the subsequences that occur more than once survive the spectral filter.
-    Finding the Missing: Ghost hunts for sequences that are missing from the data, lurking in the shadows of potential patterns.
-    Replacement: The most common sequences are replaced by these ghostly missing sequences, creating compressed data that fits in the haunted .boo extension.
+- **Extraction:** Ghost prowls your data, extracting all possible subsequences and counting their occurrences.
+- **Filtering:** Only the subsequences that occur more than once survive the spectral filter.
+- **Finding the Missing:** Ghost hunts for sequences that are missing from the data, lurking in the shadows of potential patterns.
+- **Replacement:** The most common sequences are replaced by these ghostly missing sequences, creating compressed data that fits in the haunted .boo extension.
 
 ## The .boo Extension 👻
 
@@ -27,19 +27,15 @@ Usage 🦇
 
 Run Ghost from the command line with:
 
-bash
+    python ghost-compress.py <file_path> <iterations> <max_length>
 
-python ghost-compress.py <file_path> <iterations> <max_length>
-
-    <file_path>: Path to the file you wish to compress. (It helps if it's already creepy!)
-    <iterations>: Number of iterations for the ghostly compression cycle. Use -1 for endless haunting.
-    <max_length>: The maximum length of sequences Ghost should consider in its eerie evaluations. (Beware of high numbers or your memory will be cursed!)
+- **file_path:** Path to the file you wish to compress.
+- **iterations:** Number of iterations for the ghostly compression cycle. Use -1 for endless haunting.
+- **max_length:** The maximum length of sequences Ghost should consider in its eerie evaluations. (Beware of high numbers or your memory will be cursed!)
 
 Example:
 
-bash
-
-python ghost-compress.py myfile.txt 100 10
+    python ghost-compress.py myfile.txt 100 10
 
 ## Contributing 👻
 
