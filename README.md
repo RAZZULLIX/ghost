@@ -46,6 +46,6 @@ This project is open-sourced under GPL 3.0.
 
 ## Acknowledgments
 
-    God for the ideas
-    Sonic (custom GPT-4 instance) for the code
-    The open-source community for continuous inspiration and collaboration
+- God for the ideas
+- Sonic (custom GPT-4 instance) for the code
+- The open-source community for continuous inspiration and collaboration
