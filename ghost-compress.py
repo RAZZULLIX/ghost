@@ -242,7 +242,7 @@ def main(file_path, total_iterations, max_length, top_n=256):
             ratio = f"{ratio:.3f}%"
             
             if new_size < previous_size:
-                best_iteration = iteration_count + 1
+                best_iteration = iteration_count
 
             print(f"{timing} Iteration {iteration_count} for sequence length {sequence_length} completed. Size {new_size}b Ratio {ratio} Best iteration {best_iteration}")
 
