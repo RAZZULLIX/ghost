@@ -140,14 +140,14 @@ def write_boo_file(boo_file_path, dictionaries, data, original_extension):
             boo_file.write(bytes([0, 255]))
             # Write the data
             boo_file.write(data)
+
+        # Return the size of the written file
+        return os.path.getsize(boo_file_path)
     except IOError as e:
         print(f"Error writing to boo file {boo_file_path}: {e}")
         sys.exit(1)
 
 def load_dictionaries_and_data(boo_file_path):
-    """
-    Load the dictionaries and the compressed data from the .boo file.
-    """
     dictionaries = []
     data = b""
     original_extension = ""
@@ -194,12 +194,11 @@ def main(file_path, total_iterations, max_length, top_n=256):
         dictionaries = []
         base, original_extension = os.path.splitext(file_path)
 
-    previous_combined_size = len(data)
-    
+    original_size = os.path.getsize(file_path)
+    previous_size = original_size
     sequence_length = 1
 
     while sequence_length <= max_length and (total_iterations == -1 or iteration_count < total_iterations):
-        original_size = len(data)
         best_iteration = 1
         now_time = datetime.now()
         timing = time_difference(now_time, start_time)
@@ -230,26 +229,24 @@ def main(file_path, total_iterations, max_length, top_n=256):
             dictionary = {first_missing_sequence: highest_score_sequence}
             dictionaries.append(dictionary)
 
-            current_combined_size = calculate_combined_size(dictionaries, data)  # Calculate the combined size
-
-            if current_combined_size < previous_combined_size:
-                best_iteration = iteration_count + 1
-
             gc.collect()
-
-            previous_combined_size = min(current_combined_size, previous_combined_size)
 
             iteration_count += 1
 
             now_time = datetime.now()
             timing = time_difference(now_time, start_time)
-            ratio = current_combined_size/original_size
-            ratio = f"{ratio:.3f}"
-
-            print(f"{timing} Iteration {iteration_count} for sequence length {sequence_length} completed. Size {current_combined_size}b {ratio}% Best iteration {best_iteration}")
-
+            
             # Save the boo file at the end of each iteration
-            write_boo_file(boo_file_path, dictionaries, data, original_extension)
+            new_size = write_boo_file(boo_file_path, dictionaries, data, original_extension)
+            ratio = (new_size/original_size)*100
+            ratio = f"{ratio:.3f}%"
+            
+            if new_size < previous_size:
+                best_iteration = iteration_count + 1
+
+            print(f"{timing} Iteration {iteration_count} for sequence length {sequence_length} completed. Size {new_size}b Ratio {ratio} Best iteration {best_iteration}")
+
+            previous_size = new_size
 
         sequence_length += 1
 
