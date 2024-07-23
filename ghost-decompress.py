@@ -1,9 +1,18 @@
 import sys
+from datetime import datetime
 
-def read_file(file_path):
-    with open(file_path, 'rb') as f:
-        data = f.read()
-    return data
+# Global start time
+start_time = datetime.now()
+
+def get_timestamp():
+    """Get the time difference from the start_time."""
+    now = datetime.now()
+    diff = abs(now - start_time)
+    total_seconds = int(diff.total_seconds())
+    milliseconds = int((diff.total_seconds() - total_seconds) * 1000)
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"[{hours:02}:{minutes:02}:{seconds:02}.{milliseconds:03}]" if hours <= 99 else "[99:59:59.999]+"
 
 def write_file(file_path, data):
     with open(file_path, 'wb') as f:
@@ -35,12 +44,16 @@ def load_dictionaries_and_data(boo_file_path):
     return dictionaries, data, original_extension
 
 def decompress(data, dictionaries):
-    for missing_seq, substituted_seq in reversed(dictionaries):
+    i = 1
+    for missing_seq, substituted_seq in reversed(dictionaries):        
+        print(f"\r{get_timestamp()} Processing dictionary {i}/{len(dictionaries)}...", end="", flush=True)
         data = data.replace(missing_seq, substituted_seq)
+        i = i + 1
     return data
 
 def main(file_path):
     # Read the .boo file
+    print(f"{get_timestamp()} Beginning decompression...")
     dictionaries, compressed_data, original_extension = load_dictionaries_and_data(file_path)
 
     # Decompress the data
@@ -50,6 +63,7 @@ def main(file_path):
     decompressed_file_path = file_path.replace('.boo', original_extension)
     decompressed_file_path = 'deco_' + decompressed_file_path
     write_file(decompressed_file_path, decompressed_data)
+    print(f"{get_timestamp()} Decompression completed successfully!!!")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
