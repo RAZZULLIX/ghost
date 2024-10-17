@@ -41,7 +41,7 @@ def read_file(file_path):
         with open(file_path, 'rb') as f:
             return f.read()
     except IOError as e:
-        print(f"Error reading file {file_path}: {e}")
+        print(f"{get_timestamp()}Error reading file {file_path}: {e}")
         sys.exit(1)
 
 def write_boo_file(boo_file_path, dictionaries, data, original_extension):
@@ -61,7 +61,7 @@ def write_boo_file(boo_file_path, dictionaries, data, original_extension):
 
         return os.path.getsize(boo_file_path)
     except IOError as e:
-        print(f"Error writing to boo file {boo_file_path}: {e}")
+        print(f"{get_timestamp()}Error writing to boo file {boo_file_path}: {e}")
         sys.exit(1)
 
 def load_dictionaries_and_data(boo_file_path):
@@ -153,11 +153,14 @@ def main(file_path, total_iterations, max_length, top_n=256):
 
     while sequence_length <= max_length and (total_iterations == -1 or iteration_count < total_iterations):
 
-        print(f"{get_timestamp()} Processing sequence length: {sequence_length}")
+        print(f"{get_timestamp()} Processing sequence length: {sequence_length}", end='...'),
         missing_sequences = find_missing_sequences(data, sequence_length)
         if not missing_sequences:
             sequence_length += 1
+            print()
             continue
+        else:
+            print(f" Found {len(missing_sequences)} sequences")
 
         while missing_sequences and (total_iterations == -1 or iteration_count < total_iterations):
             
